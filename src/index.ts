@@ -1,16 +1,23 @@
 import express from "express";
-import path from "path";
+import { handleReadiness } from "./api/readiness.js";
+import { handleMetrics, handleMetricsReset } from "./api/metrics.js";
+import {
+  middlewareLogResponses,
+  middlewareMetricsInc,
+} from "./api/middleware.js";
 
 const app = express();
 const PORT = 8080;
 
-app.use("/app", express.static("./src/app"));
+app.use(middlewareLogResponses);
 
-app.get("/healthz", (req, res) => {
-  res.set({ "Content-Type": "text/plain; charset=utf-8" });
-  res.status(200);
-  res.send("OK");
-});
+app.use("/app", middlewareMetricsInc, express.static("./src/app"));
+
+app.get("/healthz", handleReadiness);
+
+app.get("/metrics", handleMetrics);
+
+app.get("/reset", handleMetricsReset);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
