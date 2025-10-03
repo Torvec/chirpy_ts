@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 
 import { respondWithJSON, respondWithError } from "./json.js";
 
-export async function handleChirpsValidate(req: Request, res: Response) {
+export async function handlerChirpsValidate(req: Request, res: Response) {
   type parameters = {
     body: string;
   };
@@ -15,7 +15,12 @@ export async function handleChirpsValidate(req: Request, res: Response) {
     return;
   }
 
-  respondWithJSON(res, 200, {
-    valid: true,
-  });
+  const banned = new Set(["kerfuffle", "sharbert", "fornax"]);
+
+  const tokens = params.body.split(" ");
+  const cleaned = tokens
+    .map((word) => (banned.has(word.toLowerCase()) ? "****" : word))
+    .join(" ");
+
+  respondWithJSON(res, 200, { cleanedBody: cleaned });
 }

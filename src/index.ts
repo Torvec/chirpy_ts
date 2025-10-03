@@ -1,25 +1,26 @@
 import express from "express";
-import { handleReadiness } from "./api/readiness.js";
-import { handleMetrics, handleMetricsReset } from "./api/metrics.js";
+
+import { handlerReadiness } from "./api/readiness.js";
+import { handlerMetrics } from "./api/metrics.js";
+import { handlerReset } from "./api/reset.js";
 import {
-  middlewareLogResponses,
+  middlewareLogResponse,
   middlewareMetricsInc,
 } from "./api/middleware.js";
-import { handleChirpsValidate } from "./api/chirps.js";
+import { handlerChirpsValidate } from "./api/chirps.js";
 
 const app = express();
 const PORT = 8080;
 
-app.use(middlewareLogResponses);
-
+app.use(middlewareLogResponse);
 app.use(express.json());
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 
-app.get("/api/healthz", handleReadiness);
-app.get("/admin/metrics", handleMetrics);
-app.post("/admin/reset", handleMetricsReset);
+app.get("/api/healthz", handlerReadiness);
+app.get("/admin/metrics", handlerMetrics);
 
-app.post("/api/validate_chirp", handleChirpsValidate);
+app.post("/admin/reset", handlerReset);
+app.post("/api/validate_chirp", handlerChirpsValidate);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
