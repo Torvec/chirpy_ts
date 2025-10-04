@@ -1,5 +1,4 @@
 import express from "express";
-
 import { handlerReadiness } from "./api/readiness.js";
 import { handlerMetrics } from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
@@ -15,20 +14,39 @@ const PORT = 8080;
 
 app.use(middlewareLogResponse);
 app.use(express.json());
+
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 
-app.get("/api/healthz", (req, res, next) => {
-  Promise.resolve(handlerReadiness(req, res)).catch(next);
-});
-app.get("/admin/metrics", (req, res, next) => {
-  Promise.resolve(handlerMetrics(req, res)).catch(next);
-});
-app.post("/admin/reset", (req, res, next) => {
-  Promise.resolve(handlerReset(req, res)).catch(next);
+app.get("/api/healthz", async (req, res, next) => {
+  try {
+    await handlerReadiness(req, res);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post("/api/validate_chirp", (req, res, next) => {
-  Promise.resolve(handlerChirpsValidate(req, res)).catch(next);
+app.get("/admin/metrics", async (req, res, next) => {
+  try {
+    await handlerMetrics(req, res);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/admin/reset", async (req, res, next) => {
+  try {
+    await handlerReset(req, res);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/api/validate_chirp", async (req, res, next) => {
+  try {
+    await handlerChirpsValidate(req, res);
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.use(middlewareError);
