@@ -1,4 +1,5 @@
 import { defineConfig } from "drizzle-kit";
+
 import { config } from "./src/config";
 
 export default defineConfig({
@@ -6,6 +7,6 @@ export default defineConfig({
   out: "./src/db/migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url: config.db.url /* protocol://username:password@host:port/database?sslmode=disable */,
+    url: config.db.url,
   },
 });
