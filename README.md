@@ -1,4 +1,4 @@
-*** ***UNDER ACTIVE DEVELOPMENT*** ***
+=== **UNDER ACTIVE DEVELOPMENT** ===
 
 # Chirpy (TypeScript)
 
@@ -37,5 +37,8 @@ Briefly describe the project’s purpose, main features, and that it was built a
 
 - [Boot.dev Course Link](https://www.boot.dev/courses/learn-http-servers-typescript)
 - [ExpressJS](https://expressjs.com/)
+- [PostgresSQL](https://www.postgresql.org/)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [DB-Engines](https://db-engines.com/en/)
 
-*** ***UNDER ACTIVE DEVELOPMENT*** ***
+=== **UNDER ACTIVE DEVELOPMENT** ===
